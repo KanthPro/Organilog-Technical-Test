@@ -48,24 +48,32 @@
   top: 24px;
   align-self: flex-start;
   width: 300px;
+  flex: 0 0 300px;
+  min-width: 0;
   height: calc(100vh - 48px);
   background-color: black;
+  color: white;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   overflow-x: hidden;
   overflow-y: auto;
   transition:
     width 0.3s ease-in-out,
+    flex-basis 0.3s ease-in-out,
     opacity 0.2s ease-in-out,
     margin-left 0.3s ease-in-out;
 }
 
 .panel.opened {
+  width: 300px;
+  flex-basis: 300px;
   margin-left: 16px;
   opacity: 1;
 }
 .panel.closed {
   margin-left: 0;
   width: 0;
+  flex-basis: 0;
+  min-width: 0;
   opacity: 0;
 }
 
@@ -94,4 +102,25 @@
   flex-direction: row;
   gap: 4px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    display: block;
+  }
+
+  .panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    max-height: none;
+    width: 100%;
+    flex: 0 0 100%;
+    z-index: 10;
+  }
+
+  .panel.opened {
+    margin-left: 0;
+  }
 }
