@@ -44,8 +44,11 @@
 }
 
 .panel {
-  position: relative;
+  position: sticky;
+  top: 24px;
+  align-self: flex-start;
   width: 300px;
+  height: calc(100vh - 48px);
   background-color: black;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   overflow-x: hidden;
