@@ -1,6 +1,6 @@
+import type { AppThunk } from "../store";
 import { fetchProducts } from "./products.api";
 import { addProducts } from "./products.slice";
-import type { AppThunk } from "./store";
 
 type ProductsRequest = {
   limit?: number;

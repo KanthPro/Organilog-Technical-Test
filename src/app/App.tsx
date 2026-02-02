@@ -1,10 +1,10 @@
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
+import type { Product } from "./products/products";
+import { getProducts } from "./products/products.thunks";
 import type { AppState } from "./store";
 import { find, isEmpty, map, size } from "lodash";
 import { useEffect, useState } from "react";
-import { getProducts } from "./products.thunks";
-import type { Product } from "./products";
 
 export const App = () => {
   const dispatch = useAppDispatch();

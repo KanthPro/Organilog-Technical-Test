@@ -1,7 +1,7 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createPersist } from "./persist";
-import { productsSlice } from "./products.slice";
+import { productsSlice } from "./products/products.slice";
 
 export const rootReducer = combineReducers({
   [productsSlice.name]: productsSlice.reducer,
