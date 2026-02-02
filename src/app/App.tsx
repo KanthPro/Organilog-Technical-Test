@@ -1,39 +1,79 @@
-import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { decrement, increment, incrementBy } from "./counterSlice";
 import type { AppState } from "./store";
+import { isEmpty, map } from "lodash";
+import { useEffect, useState } from "react";
+import { getProducts } from "./products.thunks";
+import type { Product } from "./products";
 
-function App() {
-  const count = useAppSelector((state: AppState) => state.counter.value);
+export const App = () => {
   const dispatch = useAppDispatch();
+  const products = useAppSelector((state: AppState) => state.products);
+
+  const [opened, setOpened] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  useEffect(() => {
+    if (isEmpty(products.products) && products.loaded === false) {
+      dispatch(getProducts());
+    }
+  }, [dispatch, products.loaded, products.products]);
+
+  const handleSelectProduct = (productId: number) => {
+    const product = products.products.find((p) => p.id === productId);
+    setOpened(true);
+    setSelectedProduct(product || null);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app-layout">
+      <div className="products-list">
+        {map(products.products, (product) => {
+          return (
+            <div
+              className="pl-item"
+              key={product.id}
+              onClick={() => handleSelectProduct(product.id)}
+            >
+              <div className="pl-item-title">{product.title}</div>
+              <div className="pl-item-desc">${product.description}</div>
+            </div>
+          );
+        })}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => dispatch(increment())}>Increment</button>
-        <button onClick={() => dispatch(decrement())}>Decrement</button>
-        <button onClick={() => dispatch(incrementBy(5))}>Increment by 5</button>
-        <p>Count is {count}</p>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className={`panel ${opened ? "opened" : "closed"}`}>
+        <div className="panel-close" onClick={() => setOpened(false)}>
+          x
+        </div>
+        <div className="panel-content">
+          <div>
+            <img
+              src={selectedProduct?.thumbnail}
+              style={{ maxWidth: "100%" }}
+            ></img>
+            <div>Title: {selectedProduct?.title}</div>
+          </div>
+          <br />
+          <div>Description : {selectedProduct?.description}</div>
+          <br />
+          <div>Price : {selectedProduct?.price}</div>
+          <br />
+          <div>Rating : {selectedProduct?.rating}</div>
+          <br />
+          <div>Stock : {selectedProduct?.stock}</div>
+          <br />
+          <div>Brand : {selectedProduct?.brand}</div>
+          <br />
+          <div>
+            Gallery :
+            <div className="gallery">
+              {selectedProduct?.images.map((img, index) => (
+                <img key={index} src={img} style={{ maxWidth: "50px" }}></img>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
-}
-
-export default App;
+};
