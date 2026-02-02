@@ -1,10 +1,10 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counterSlice";
 import { createPersist } from "./persist";
+import { productsSlice } from "./products.slice";
 
 export const rootReducer = combineReducers({
-  counter: counterReducer,
+  [productsSlice.name]: productsSlice.reducer,
 });
 
 const persist = createPersist({
