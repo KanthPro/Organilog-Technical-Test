@@ -1,8 +1,33 @@
 import { map } from "lodash";
 import type { Product } from "./products";
 
-export const fetchProducts = async (/* {}: ProductsRequest */) => {
-  const response = await fetch(`https://dummyjson.com/products`);
+type ProductsRequest = {
+  limit?: number;
+  offset?: number;
+};
+
+export const fetchProducts = async ({
+  limit,
+  offset,
+}: ProductsRequest = {}) => {
+  const url = new URL("https://dummyjson.com/products");
+  const searchParams = new URLSearchParams();
+
+  if (limit !== undefined) {
+    searchParams.set("limit", String(limit));
+  }
+
+  if (offset !== undefined) {
+    searchParams.set("skip", String(offset));
+  }
+
+  const query = searchParams.toString();
+
+  if (query) {
+    url.search = query;
+  }
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error("Failed to fetch products");

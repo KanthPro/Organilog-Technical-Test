@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Product } from "./products";
+import { forEach } from "lodash";
 
 type ProductsState = {
-  products: Product[];
+  products: Record<number, Product>;
   loaded: boolean;
 };
 
 const initialState: ProductsState = {
-  products: [],
+  products: {},
   loaded: false,
 };
 
@@ -17,7 +18,9 @@ export const productsSlice = createSlice({
   initialState,
   reducers: {
     addProducts: (state, action: PayloadAction<Product[]>) => {
-      state.products = action.payload;
+      forEach(action.payload, (product) => {
+        state.products[product.id] = product;
+      });
       state.loaded = true;
     },
   },
