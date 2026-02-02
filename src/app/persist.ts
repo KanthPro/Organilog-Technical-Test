@@ -1,4 +1,5 @@
 import type { AppState } from "./store";
+import { debounce } from "lodash";
 
 type PersistConfig = {
   key: string;
@@ -16,8 +17,8 @@ type PersistedState = {
 export const createPersist = (config: PersistConfig) => {
   const storageKey = `${config.key}:${config.version}`;
 
-  const subscribe = (getState: () => AppState, debounce = 200) =>
-    createDebouncedSubscriber(
+  const subscribe = (getState: () => AppState) =>
+    debounce(
       () =>
         savePersistedState(
           config.storage,
@@ -25,7 +26,7 @@ export const createPersist = (config: PersistConfig) => {
           config.version,
           getState(),
         ),
-      debounce,
+      200,
     );
 
   return {
@@ -79,16 +80,4 @@ const savePersistedState = (
   } catch (error) {
     console.warn("Persist save failed:", error);
   }
-};
-
-const createDebouncedSubscriber = (callback: () => void, debounce: number) => {
-  let timeoutId: number | undefined;
-
-  return () => {
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
-    }
-
-    timeoutId = window.setTimeout(callback, debounce);
-  };
 };
