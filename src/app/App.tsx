@@ -9,7 +9,6 @@ import type { Product } from "./products";
 export const App = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector((state: AppState) => state.products);
-  console.log("products", products);
 
   const [opened, setOpened] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
