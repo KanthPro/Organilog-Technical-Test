@@ -6,6 +6,19 @@ type ProductsRequest = {
   offset?: number;
 };
 
+type ProductDto = {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  rating: number;
+  stock: number;
+  brand: string;
+  images: string[];
+  thumbnail: string;
+  category: string;
+};
+
 export const fetchProducts = async ({
   limit,
   offset,
@@ -35,11 +48,12 @@ export const fetchProducts = async ({
 
   const payload = await response.json();
 
-  return map(payload.products, (product) => {
+  return map<ProductDto, Product>(payload.products, (product) => {
     return {
       title: product.title,
       description: product.description,
       id: product.id,
+      category: product.category,
       price: product.price,
       rating: product.rating,
       stock: product.stock,
@@ -47,5 +61,5 @@ export const fetchProducts = async ({
       images: product.images,
       thumbnail: product.thumbnail,
     };
-  }) as Product[];
+  });
 };
