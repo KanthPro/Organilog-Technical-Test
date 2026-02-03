@@ -1,0 +1,8 @@
+.product-details {
+  display: flex;
+  flex-direction: column;
+
+  .pd-thumbmail {
+    max-width: 100%;
+  }
+}

@@ -1,6 +1,7 @@
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { Panel } from "./panel/panel";
+import { ProductDetals } from "./products/product-details/product-details";
 import { ProductTile } from "./products/product-tile/product-tile";
 import type { Product } from "./products/products";
 import {
@@ -55,44 +56,7 @@ export const App = () => {
         opened={selectedProduct !== null}
         onClose={() => setSelectedProduct(null)}
       >
-        <div>
-          <img
-            src={selectedProduct?.thumbnail}
-            style={{ maxWidth: "100%" }}
-          ></img>
-          <div>
-            <u>Title :</u> {selectedProduct?.title}
-          </div>
-        </div>
-        <br />
-        <div>
-          <u>Description :</u> {selectedProduct?.description}
-        </div>
-        <br />
-        <div>
-          <u>Price :</u> {selectedProduct?.price}
-        </div>
-        <br />
-        <div>
-          <u>Rating :</u> {selectedProduct?.rating}
-        </div>
-        <br />
-        <div>
-          <u>Stock :</u> {selectedProduct?.stock}
-        </div>
-        <br />
-        <div>
-          <u>Brand :</u> {selectedProduct?.brand}
-        </div>
-        <br />
-        <div>
-          <u>Gallery :</u>
-          <div className="gallery">
-            {map(selectedProduct?.images, (img, index) => (
-              <img key={index} src={img} style={{ maxWidth: "50px" }} />
-            ))}
-          </div>
-        </div>
+        {selectedProduct && <ProductDetals product={selectedProduct} />}
       </Panel>
     </div>
   );
