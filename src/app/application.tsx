@@ -1,4 +1,5 @@
-import "./App.css";
+import "./application.css";
+
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { Panel } from "./panel/panel";
 import { ProductDetals } from "./products/product-details/product-details";
