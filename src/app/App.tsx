@@ -1,6 +1,7 @@
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { Panel } from "./panel/panel";
+import { ProductTile } from "./products/product-tile/product-tile";
 import type { Product } from "./products/products";
 import {
   selectProducts,
@@ -39,14 +40,11 @@ export const App = () => {
       <div className="products-list">
         {map(products, (product) => {
           return (
-            <div
-              className="pl-item"
+            <ProductTile
               key={product.id}
-              onClick={() => handleSelectProduct(product.id)}
-            >
-              <div className="pl-item-title">{product.title}</div>
-              <div className="pl-item-desc">${product.description}</div>
-            </div>
+              product={product}
+              onSelect={handleSelectProduct}
+            />
           );
         })}
         <div className="load-more">
