@@ -1,27 +1,31 @@
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import type { Product } from "./products/products";
+import {
+  selectProducts,
+  selectProductsLoaded,
+} from "./products/products.selectors";
 import { getProducts } from "./products/products.thunks";
-import type { AppState } from "./store";
 import { find, isEmpty, map, size } from "lodash";
 import { useEffect, useState } from "react";
 
 export const App = () => {
   const dispatch = useAppDispatch();
-  const products = useAppSelector((state: AppState) => state.products);
+  const products = useAppSelector(selectProducts);
+  const productsLoaded = useAppSelector(selectProductsLoaded);
 
   const [opened, setOpened] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [offset, setOffset] = useState(size(products.products) || 0);
+  const [offset, setOffset] = useState(size(products) || 0);
 
   useEffect(() => {
-    if (isEmpty(products.products) && products.loaded === false) {
+    if (isEmpty(products) && productsLoaded === false) {
       dispatch(getProducts({ limit: 5, offset: 0 }));
     }
-  }, [dispatch, products.loaded, products.products]);
+  }, [dispatch, productsLoaded, products]);
 
   const handleSelectProduct = (productId: number) => {
-    const product = find(products.products, (p) => p.id === productId);
+    const product = find(products, (p) => p.id === productId);
     setOpened(true);
     setSelectedProduct(product || null);
   };
@@ -34,7 +38,7 @@ export const App = () => {
   return (
     <div className="app-layout">
       <div className="products-list">
-        {map(products.products, (product) => {
+        {map(products, (product) => {
           return (
             <div
               className="pl-item"
