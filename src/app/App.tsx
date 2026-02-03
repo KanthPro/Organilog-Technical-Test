@@ -18,7 +18,7 @@ export const App = () => {
     if (isEmpty(products.products) && products.loaded === false) {
       dispatch(getProducts({ limit: 5, offset: 0 }));
     }
-  }, [dispatch, offset, products.loaded, products.products]);
+  }, [dispatch, products.loaded, products.products]);
 
   const handleSelectProduct = (productId: number) => {
     const product = find(products.products, (p) => p.id === productId);
