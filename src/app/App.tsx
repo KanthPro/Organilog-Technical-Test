@@ -1,5 +1,6 @@
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks";
+import { Panel } from "./panel/panel";
 import type { Product } from "./products/products";
 import {
   selectProducts,
@@ -14,7 +15,6 @@ export const App = () => {
   const products = useAppSelector(selectProducts);
   const productsLoaded = useAppSelector(selectProductsLoaded);
 
-  const [opened, setOpened] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [offset, setOffset] = useState(size(products) || 0);
 
@@ -26,7 +26,6 @@ export const App = () => {
 
   const handleSelectProduct = (productId: number) => {
     const product = find(products, (p) => p.id === productId);
-    setOpened(true);
     setSelectedProduct(product || null);
   };
 
@@ -54,39 +53,49 @@ export const App = () => {
           <button onClick={loadProducts}>Load more</button>
         </div>
       </div>
-      <div className={`panel ${opened ? "opened" : "closed"}`}>
-        <div className="panel-close" onClick={() => setOpened(false)}>
-          x
-        </div>
-        <div className="panel-content">
+      <Panel
+        opened={selectedProduct !== null}
+        onClose={() => setSelectedProduct(null)}
+      >
+        <div>
+          <img
+            src={selectedProduct?.thumbnail}
+            style={{ maxWidth: "100%" }}
+          ></img>
           <div>
-            <img
-              src={selectedProduct?.thumbnail}
-              style={{ maxWidth: "100%" }}
-            ></img>
-            <div>Title: {selectedProduct?.title}</div>
-          </div>
-          <br />
-          <div>Description : {selectedProduct?.description}</div>
-          <br />
-          <div>Price : {selectedProduct?.price}</div>
-          <br />
-          <div>Rating : {selectedProduct?.rating}</div>
-          <br />
-          <div>Stock : {selectedProduct?.stock}</div>
-          <br />
-          <div>Brand : {selectedProduct?.brand}</div>
-          <br />
-          <div>
-            Gallery :
-            <div className="gallery">
-              {selectedProduct?.images.map((img, index) => (
-                <img key={index} src={img} style={{ maxWidth: "50px" }}></img>
-              ))}
-            </div>
+            <u>Title :</u> {selectedProduct?.title}
           </div>
         </div>
-      </div>
+        <br />
+        <div>
+          <u>Description :</u> {selectedProduct?.description}
+        </div>
+        <br />
+        <div>
+          <u>Price :</u> {selectedProduct?.price}
+        </div>
+        <br />
+        <div>
+          <u>Rating :</u> {selectedProduct?.rating}
+        </div>
+        <br />
+        <div>
+          <u>Stock :</u> {selectedProduct?.stock}
+        </div>
+        <br />
+        <div>
+          <u>Brand :</u> {selectedProduct?.brand}
+        </div>
+        <br />
+        <div>
+          <u>Gallery :</u>
+          <div className="gallery">
+            {map(selectedProduct?.images, (img, index) => (
+              <img key={index} src={img} style={{ maxWidth: "50px" }} />
+            ))}
+          </div>
+        </div>
+      </Panel>
     </div>
   );
 };
