@@ -6,6 +6,10 @@ type ProductsRequest = {
   offset?: number;
 };
 
+type ProductsByCategoryRequest = {
+  category: string;
+};
+
 type ProductDto = {
   id: number;
   title: string;
@@ -44,6 +48,37 @@ export const fetchProducts = async ({
 
   if (!response.ok) {
     throw new Error("Failed to fetch products");
+  }
+
+  const payload = await response.json();
+
+  return map<ProductDto, Product>(payload.products, (product) => {
+    return {
+      title: product.title,
+      description: product.description,
+      id: product.id,
+      category: product.category,
+      price: product.price,
+      rating: product.rating,
+      stock: product.stock,
+      brand: product.brand,
+      images: product.images,
+      thumbnail: product.thumbnail,
+    };
+  });
+};
+
+export const fetchProductByCategory = async ({
+  category,
+}: ProductsByCategoryRequest) => {
+  const url = new URL(
+    `https://dummyjson.com/products/category/${encodeURIComponent(category)}`,
+  );
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch products by category");
   }
 
   const payload = await response.json();
