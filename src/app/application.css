@@ -18,16 +18,16 @@
 
 .products-list {
   flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
   min-height: 0;
 }
 
 .products-list-items {
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
+  gap: 8px;
   padding-right: 4px;
 }
 
